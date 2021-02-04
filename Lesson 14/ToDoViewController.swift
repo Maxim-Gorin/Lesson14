@@ -46,48 +46,41 @@ class ToDoViewController: UIViewController {
 
         // Do any additional setup after loading the view.
     }
-    
-    override func viewWillLayoutSubviews() {
-        super.viewWillLayoutSubviews()
-        
-    }
 
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destination.
-        // Pass the selected object to the new view controller.
-    }
-    */
     @IBAction func addToDo(_ sender: Any) {
-        let alert = UIAlertController(title: "Add ToDo via \(dbType.rawValue)", message: "Enter a text", preferredStyle: .alert)
+        let alert = UIAlertController(title: "Add ToDo via \(dbType.rawValue)", message: "Enter a text\n\n\n", preferredStyle: .alert)
 
         alert.addTextField { (textField) in
             textField.text = ""
         }
 
+        let datePicker: UIDatePicker = UIDatePicker()
+        datePicker.timeZone = .current
+        datePicker.datePickerMode = .date
+        datePicker.frame = CGRect(x: 20, y: 70, width: 230, height: 40)
+        alert.view.addSubview(datePicker)
+
         alert.addAction(UIAlertAction(title: "Add", style: .default, handler: { [weak alert] (_) in
             let textField = alert?.textFields![0]
-            
+
             if let text = textField?.text, !text.isEmpty {
                 if self.dbType == .realm {
                     let toDo = ToDoRealm()
                     toDo.title = text
-                    
+                    toDo.date = datePicker.date
+                    toDo.completed = false
+
                     RealmPersistance.shared.add(toDo)
                 } else {
-                    CoreDataPersistance.shared.add(text)
+                    CoreDataPersistance.shared.add(title: text, date: datePicker.date)
                 }
-                
+
                 self.reloadTableView()
             }
         }))
-        
+
         alert.addAction(UIAlertAction(title: "Cancel", style: .cancel))
-                        
+
         self.present(alert, animated: true, completion: nil)
     }
     
@@ -112,16 +105,27 @@ extension ToDoViewController: UITableViewDelegate, UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = UITableViewCell()
-        cell.selectionStyle = .none
         
-        if dbType == .realm {
-            cell.textLabel?.text = toDosRealm[indexPath.row].title
-        } else {
-            cell.textLabel?.text = toDosCoreData[indexPath.row].title
+        var cell = tableView.dequeueReusableCell(withIdentifier: "reuseIdentifier")
+        if cell == nil {
+            cell = UITableViewCell(style: .value1, reuseIdentifier: "reuseIdentifier")
         }
         
-        return cell
+        if dbType == .realm {
+            let toDo = toDosRealm[indexPath.row]
+            
+            cell?.textLabel?.text = toDo.title
+            cell?.detailTextLabel?.text = toDo.date.toString()
+            cell?.accessoryType = toDo.completed ? .checkmark : .none
+        } else {
+            let toDo = toDosCoreData[indexPath.row]
+
+            cell?.textLabel?.text = toDo.title
+            cell?.detailTextLabel?.text = toDo.date?.toString()
+            cell?.accessoryType = toDo.completed ? .checkmark : .none
+        }
+        
+        return cell ?? UITableViewCell()
     }
     
     func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
@@ -130,26 +134,56 @@ extension ToDoViewController: UITableViewDelegate, UITableViewDataSource {
 
     func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
         if (editingStyle == .delete) {
-            
             if dbType == .realm {
                 let toDo = toDosRealm[indexPath.row]
                 RealmPersistance.shared.remove(toDo)
+                toDosRealm.remove(at: indexPath.row)
             } else {
                 let toDo = toDosCoreData[indexPath.row]
                 CoreDataPersistance.shared.remove(toDo)
+                toDosCoreData.remove(at: indexPath.row)
             }
             
-            reloadTableView()
+            tableView.deleteRows(at: [indexPath], with: .automatic)
         }
     }
-
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
+        
+        if dbType == .realm {
+            let toDo = toDosRealm[indexPath.row]
+            let newToDo = ToDoRealm()
+            newToDo.id = toDo.id
+            newToDo.title = toDo.title
+            newToDo.date = toDo.date
+            newToDo.completed = !toDo.completed
+
+            RealmPersistance.shared.update(newToDo)
+            
+            toDosRealm[indexPath.row] = newToDo
+        } else {
+            let toDo = toDosCoreData[indexPath.row]
+
+            if let newToDo = CoreDataPersistance.shared.update(toDo) {
+                toDosCoreData[indexPath.row] = newToDo
+            }
+        }
+        
+        tableView.reloadRows(at: [indexPath], with: .automatic)
     }
 }
 
 enum DatabaseType: String {
     case realm = "Realm"
     case coredata = "CoreData"
+}
+
+extension Date {
+    func toString() -> String {
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "dd-MM-yyyy"
+
+        return dateFormatter.string(from: self)
+    }
 }

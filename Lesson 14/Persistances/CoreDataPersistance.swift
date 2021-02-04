@@ -13,13 +13,19 @@ class CoreDataPersistance: UIViewController {
     static let shared = CoreDataPersistance()
     private let request = NSFetchRequest<ToDoCoreData>(entityName: "ToDoCoreData")
 
+    var context: NSManagedObjectContext {
+        getContext()
+    }
+    
     private func getContext() -> NSManagedObjectContext {
         let appDelegate = UIApplication.shared.delegate as! AppDelegate
         return appDelegate.persistentContainer.viewContext
     }
 
     func getAllToDos() -> [ToDoCoreData] {
-        if let result = try? getContext().fetch(request)
+        request.predicate = .none
+        
+        if let result = try? context.fetch(request)
         {
             return result
         }
@@ -27,20 +33,39 @@ class CoreDataPersistance: UIViewController {
         return [ToDoCoreData]()
     }
     
-    func add(_ title: String) {
-        let context: NSManagedObjectContext = getContext()
+    private func getOneToDo(_ toDo: ToDoCoreData) -> ToDoCoreData? {
+        request.predicate = NSPredicate(format: "SELF = %@", toDo.objectID)
+        
+        if let result = try? context.fetch(request) {
+            return result.first
+        }
+        
+        return nil
+    }
+    
+    func add(title: String, date: Date, completed: Bool = false) {
+        let toDo = ToDoCoreData(context: context)
+        toDo.title = title
+        toDo.date = date
+        toDo.completed = completed
 
-        let newToDo = ToDoCoreData(context: context)
-        newToDo.title = title
-                
         save(context: context)
     }
     
     func remove(_ toDo: ToDoCoreData) {
-        let context: NSManagedObjectContext = getContext()
         context.delete(toDo)
 
         save(context: context)
+    }
+    
+    func update(_ toDo: ToDoCoreData) -> ToDoCoreData? {
+        request.predicate = NSPredicate(format: "SELF = %@", toDo.objectID)
+        if let result = try? context.fetch(request), !result.isEmpty {
+            result.first?.setValue(!toDo.completed, forKey: "completed")
+            save(context: context)
+        }
+        
+        return getOneToDo(toDo)
     }
     
     private func save(context: NSManagedObjectContext) {
