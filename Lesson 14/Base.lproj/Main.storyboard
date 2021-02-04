@@ -11,7 +11,7 @@
         <!--UserDefaults-->
         <scene sceneID="tne-QT-ifu">
             <objects>
-                <viewController id="BYZ-38-t0r" customClass="ViewController" customModule="Lesson_13" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="BYZ-38-t0r" customClass="ViewController" customModule="Lesson_14" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="8bC-Xf-vdC">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -37,7 +37,6 @@
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <constraints>
                             <constraint firstItem="18b-2v-9aE" firstAttribute="trailing" secondItem="6tE-nC-sGl" secondAttribute="trailing" id="0wL-xE-E3H"/>
-                            <constraint firstItem="7js-88-KBI" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="5o0-UF-vKh"/>
                             <constraint firstItem="7js-88-KBI" firstAttribute="centerY" secondItem="8bC-Xf-vdC" secondAttribute="centerY" id="ElY-cX-YmT"/>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="6tE-nC-sGl" secondAttribute="trailing" constant="20" id="P53-6K-YDn"/>
                             <constraint firstItem="18b-2v-9aE" firstAttribute="top" secondItem="6tE-nC-sGl" secondAttribute="bottom" constant="30" id="PU3-r0-nPt"/>
@@ -56,23 +55,48 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1005.7971014492755" y="107.8125"/>
+            <point key="canvasLocation" x="1916" y="102"/>
         </scene>
-        <!--Realm-->
+        <!--Realm ToDo-->
         <scene sceneID="QzS-Qq-YCH">
             <objects>
-                <viewController id="Wbz-80-gce" sceneMemberID="viewController">
+                <viewController id="Wbz-80-gce" customClass="ToDoViewController" customModule="Lesson_14" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="Wci-zo-kAL">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="nGm-hY-sEO">
+                                <rect key="frame" x="0.0" y="88" width="414" height="725"/>
+                                <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                                <connections>
+                                    <outlet property="dataSource" destination="Wbz-80-gce" id="0Op-9m-JFU"/>
+                                    <outlet property="delegate" destination="Wbz-80-gce" id="iEL-Fa-cAv"/>
+                                </connections>
+                            </tableView>
+                        </subviews>
                         <viewLayoutGuide key="safeArea" id="Xdn-cT-C33"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <constraints>
+                            <constraint firstItem="nGm-hY-sEO" firstAttribute="leading" secondItem="Xdn-cT-C33" secondAttribute="leading" id="5mj-A2-N2t"/>
+                            <constraint firstItem="nGm-hY-sEO" firstAttribute="top" secondItem="Xdn-cT-C33" secondAttribute="top" id="NvK-cY-BPo"/>
+                            <constraint firstItem="nGm-hY-sEO" firstAttribute="bottom" secondItem="Xdn-cT-C33" secondAttribute="bottom" id="b5a-ei-gDR"/>
+                            <constraint firstItem="nGm-hY-sEO" firstAttribute="trailing" secondItem="Xdn-cT-C33" secondAttribute="trailing" id="xn1-1V-zBG"/>
+                        </constraints>
                     </view>
-                    <tabBarItem key="tabBarItem" title="Realm" image="r.circle" catalog="system" id="Tcw-oq-yqn"/>
+                    <navigationItem key="navigationItem" title="Realm ToDo" id="Uar-lc-aac">
+                        <barButtonItem key="rightBarButtonItem" title="add" image="plus" catalog="system" id="FMl-pe-wHt">
+                            <connections>
+                                <action selector="addToDo:" destination="Wbz-80-gce" id="I6U-UK-GAj"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
+                    <connections>
+                        <outlet property="tableView" destination="nGm-hY-sEO" id="ozY-ng-TrG"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="auw-PC-m94" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1006" y="834"/>
+            <point key="canvasLocation" x="2884" y="1235"/>
         </scene>
         <!--Tab Bar Controller-->
         <scene sceneID="XOf-jt-hGN">
@@ -86,52 +110,123 @@
                     </tabBar>
                     <connections>
                         <segue destination="BYZ-38-t0r" kind="relationship" relationship="viewControllers" id="Qkh-oL-QNj"/>
-                        <segue destination="Wbz-80-gce" kind="relationship" relationship="viewControllers" id="sbu-97-82B"/>
-                        <segue destination="qJQ-dU-6sc" kind="relationship" relationship="viewControllers" id="8mQ-UU-2I2"/>
-                        <segue destination="fB6-Ki-C3y" kind="relationship" relationship="viewControllers" id="RfW-ip-vf7"/>
+                        <segue destination="GBu-MX-BVp" kind="relationship" relationship="viewControllers" id="rT5-cn-1UN"/>
+                        <segue destination="TAT-ot-otp" kind="relationship" relationship="viewControllers" id="L5X-Fz-WEw"/>
+                        <segue destination="L02-KW-5q6" kind="relationship" relationship="viewControllers" id="6vS-yR-0BY"/>
                     </connections>
                 </tabBarController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="DlH-Pq-frc" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-133" y="1604"/>
-        </scene>
-        <!--CoreData-->
-        <scene sceneID="Lhd-gs-m5N">
-            <objects>
-                <viewController id="qJQ-dU-6sc" sceneMemberID="viewController">
-                    <view key="view" contentMode="scaleToFill" id="oVp-a4-JJo">
-                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <viewLayoutGuide key="safeArea" id="45p-X9-5z7"/>
-                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
-                    </view>
-                    <tabBarItem key="tabBarItem" title="CoreData" image="c.circle" catalog="system" id="ngN-Cb-TDZ"/>
-                </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="At0-Iz-gh3" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="1006" y="1605"/>
+            <point key="canvasLocation" x="817" y="1602"/>
         </scene>
         <!--Weather-->
-        <scene sceneID="Ius-Cl-UgQ">
+        <scene sceneID="kCc-d2-qEU">
             <objects>
-                <viewController id="fB6-Ki-C3y" sceneMemberID="viewController">
-                    <view key="view" contentMode="scaleToFill" id="OL6-Wq-9k9">
+                <viewController id="L02-KW-5q6" customClass="WeatherViewController" customModule="Lesson_14" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="Ooj-w6-2en">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <viewLayoutGuide key="safeArea" id="nhi-OY-1PH"/>
+                        <subviews>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="f7S-Ky-65D" customClass="WeatherView" customModule="Lesson_14" customModuleProvider="target">
+                                <rect key="frame" x="0.0" y="44" width="414" height="384.5"/>
+                            </view>
+                            <activityIndicatorView hidden="YES" opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" style="medium" translatesAutoresizingMaskIntoConstraints="NO" id="7B2-8P-BcS">
+                                <rect key="frame" x="197" y="74" width="20" height="20"/>
+                            </activityIndicatorView>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="mmq-Af-VFW" customClass="WeatherView" customModule="Lesson_14" customModuleProvider="target">
+                                <rect key="frame" x="0.0" y="428.5" width="414" height="384.5"/>
+                                <subviews>
+                                    <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="NnS-fi-31h">
+                                        <rect key="frame" x="0.0" y="0.0" width="414" height="384.5"/>
+                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <connections>
+                                            <outlet property="dataSource" destination="L02-KW-5q6" id="9RC-KP-3nk"/>
+                                            <outlet property="delegate" destination="L02-KW-5q6" id="xk9-hX-C37"/>
+                                        </connections>
+                                    </tableView>
+                                </subviews>
+                                <constraints>
+                                    <constraint firstAttribute="bottom" secondItem="NnS-fi-31h" secondAttribute="bottom" id="PXr-dd-U0s"/>
+                                    <constraint firstItem="NnS-fi-31h" firstAttribute="leading" secondItem="mmq-Af-VFW" secondAttribute="leading" id="b8C-6I-23t"/>
+                                    <constraint firstItem="NnS-fi-31h" firstAttribute="top" secondItem="mmq-Af-VFW" secondAttribute="top" id="cvC-NR-83T"/>
+                                    <constraint firstAttribute="trailing" secondItem="NnS-fi-31h" secondAttribute="trailing" id="v1w-iE-FHr"/>
+                                </constraints>
+                            </view>
+                        </subviews>
+                        <viewLayoutGuide key="safeArea" id="S2c-N4-Q2k"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <constraints>
+                            <constraint firstItem="f7S-Ky-65D" firstAttribute="top" secondItem="S2c-N4-Q2k" secondAttribute="top" id="0SZ-sQ-TNb"/>
+                            <constraint firstItem="mmq-Af-VFW" firstAttribute="leading" secondItem="S2c-N4-Q2k" secondAttribute="leading" id="1PR-pB-Ruh"/>
+                            <constraint firstItem="mmq-Af-VFW" firstAttribute="height" secondItem="f7S-Ky-65D" secondAttribute="height" id="Yqu-cL-k5R"/>
+                            <constraint firstItem="7B2-8P-BcS" firstAttribute="top" secondItem="S2c-N4-Q2k" secondAttribute="top" constant="30" id="ZdR-js-8FD"/>
+                            <constraint firstItem="S2c-N4-Q2k" firstAttribute="trailing" secondItem="f7S-Ky-65D" secondAttribute="trailing" id="Zr2-cu-TtN"/>
+                            <constraint firstItem="mmq-Af-VFW" firstAttribute="top" secondItem="f7S-Ky-65D" secondAttribute="bottom" id="gES-Tu-dOd"/>
+                            <constraint firstItem="S2c-N4-Q2k" firstAttribute="bottom" secondItem="mmq-Af-VFW" secondAttribute="bottom" id="hx2-h7-gRQ"/>
+                            <constraint firstItem="7B2-8P-BcS" firstAttribute="centerX" secondItem="Ooj-w6-2en" secondAttribute="centerX" id="jM3-gN-WwL"/>
+                            <constraint firstItem="f7S-Ky-65D" firstAttribute="leading" secondItem="S2c-N4-Q2k" secondAttribute="leading" id="r0l-gR-QFV"/>
+                            <constraint firstItem="mmq-Af-VFW" firstAttribute="trailing" secondItem="S2c-N4-Q2k" secondAttribute="trailing" id="xcW-Wt-tBh"/>
+                        </constraints>
                     </view>
-                    <tabBarItem key="tabBarItem" title="Weather" image="cloud.sun.rain" catalog="system" id="7T1-ZO-WOB"/>
+                    <tabBarItem key="tabBarItem" title="Weather" image="cloud.sun.rain" catalog="system" id="smJ-YB-tm1"/>
+                    <connections>
+                        <outlet property="activityIndicator" destination="7B2-8P-BcS" id="FtO-j5-rIQ"/>
+                        <outlet property="tableView" destination="NnS-fi-31h" id="dgq-Qe-fYk"/>
+                        <outlet property="todayView" destination="f7S-Ky-65D" id="yFn-rA-4TL"/>
+                        <outlet property="weekView" destination="mmq-Af-VFW" id="CZN-ln-7MV"/>
+                    </connections>
                 </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="No8-Ex-Chu" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="MRb-S4-kvO" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1006" y="2326"/>
+            <point key="canvasLocation" x="1916" y="2370"/>
+        </scene>
+        <!--Realm-->
+        <scene sceneID="scG-wo-Awd">
+            <objects>
+                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="GBu-MX-BVp" sceneMemberID="viewController">
+                    <tabBarItem key="tabBarItem" title="Realm" image="r.circle" catalog="system" id="9gu-9i-VV1"/>
+                    <toolbarItems/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="NIu-dV-UUD">
+                        <rect key="frame" x="0.0" y="44" width="414" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <nil name="viewControllers"/>
+                    <connections>
+                        <segue destination="Wbz-80-gce" kind="relationship" relationship="rootViewController" id="pgK-ch-A9e"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="xWy-G6-13Q" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1915.9420289855075" y="833.70535714285711"/>
+        </scene>
+        <!--CoreData-->
+        <scene sceneID="KEe-H3-xPh">
+            <objects>
+                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="TAT-ot-otp" sceneMemberID="viewController">
+                    <tabBarItem key="tabBarItem" title="CoreData" image="c.circle" catalog="system" id="6Tg-mh-xGo"/>
+                    <toolbarItems/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="GU6-Wm-RTB">
+                        <rect key="frame" x="0.0" y="44" width="414" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <nil name="viewControllers"/>
+                    <connections>
+                        <segue destination="Wbz-80-gce" kind="relationship" relationship="rootViewController" id="m8k-BH-lu8"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="dhd-fG-zl6" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1916" y="1602"/>
         </scene>
     </scenes>
+    <inferredMetricsTieBreakers>
+        <segue reference="m8k-BH-lu8"/>
+    </inferredMetricsTieBreakers>
     <resources>
         <image name="c.circle" catalog="system" width="128" height="121"/>
         <image name="cloud.sun.rain" catalog="system" width="128" height="125"/>
         <image name="person.circle" catalog="system" width="128" height="121"/>
+        <image name="plus" catalog="system" width="128" height="113"/>
         <image name="r.circle" catalog="system" width="128" height="121"/>
         <systemColor name="secondaryLabelColor">
             <color red="0.23529411764705882" green="0.23529411764705882" blue="0.2627450980392157" alpha="0.59999999999999998" colorSpace="custom" customColorSpace="sRGB"/>
